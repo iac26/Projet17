@@ -22,15 +22,10 @@
 \begin{center}
 \Large \textbf{Projet d'Automne: Me too ?}
 \end{center}
-Une fois les paramètres entrez par l'utilisateur vérifiés, le programme commence les simulations. Le tout est structuré en trois boucles tout a l'extérieur il y a la boucle des contextes ensuite la boucle du taux de vaccination et finalement une boucle pour le nombre de simulations. 
-\begin{figure}[htb]
-\begin{framed}
-\includegraphics[scale=0.12]{graph.png}
-\end{framed}
-\caption{Diagramme des fonctions}
-\end{figure}
+L'évaluation des contextes est faite par trois boucles "for" les unes dans les autres. Tout à l'extérieur il y a la boucle du contexte, ensuite vient le taux de vaccination et finalement une boucle sur \textit{nbSim}, le nombre de simulations. A l'intérieur de ces boucles se trouve la fonction simulation. \textit{simulation} gère une simulation, c'est à dire, la mise à jour asynchrone jusqu'à ce que toutes les personnes non vaccinées soient contaminées. \\
 
 \begin{figure}[htb]
+\textbf{Pseudocode }
 \begin{framed} %pseudocode
 \vspace{4pt}
 1: \tab[0cm]\textit{simulations}[\textit{nbSim}]\\
@@ -47,7 +42,12 @@ Une fois les paramètres entrez par l'utilisateur vérifiés, le programme commence
 12:\tab[3cm]\textbf{pour} \textit{i} \textbf{allant de} 0 \textbf{à} \textit{contexte} - 1 : \\
 13:\tab[4cm]\textit{people}[\textit{i}][ETAT] $\leftarrow$ N
 \end{framed}
-\caption{Pseudocode}
+\end{figure}
+\begin{figure}[htb]
+\textbf{Diagramme des fonctions \textit{Call Graph} }
+\begin{framed}
+\includegraphics[scale=0.12]{graph.png}
+\end{framed}
 \end{figure}
 
 \end{document} 
