@@ -118,7 +118,7 @@ static int rebouclement(int worldSize, int pos);
  * \param 	len			longeur du tableau people
  * \param 	people		tableau contenant toutes les personnes et leurs parametres
  */
-static void printWorld(int worldSize, int len, int people[len][NB_PARAM_PERS]);
+static void print_world(int worldSize, int len, int people[len][NB_PARAM_PERS]);
 
 /**
  * \brief	teste la contamination d'une personne avec ses voisins
@@ -400,7 +400,7 @@ static int rebouclement(int worldSize, int pos){
 	return pos;
 }
 
-static void printWorld(int worldSize, int len, int people[len][NB_PARAM_PERS]) {
+static void print_world(int worldSize, int len, int people[len][NB_PARAM_PERS]) {
 	char world[worldSize][worldSize];
 	int i, j, k;
 	for (i = 0; i < worldSize; i++)
@@ -567,7 +567,7 @@ static int simulation(int modifier[MODIFIER_SIZE][COORDS], int affichage,
 	int next_move[COORDS];
 	while(end) {
 			if (affichage) 
-				printWorld(worldSize, blocker, people);
+				print_world(worldSize, blocker, people);
 			for(i = 0; i < blocker; i++) {
 				test_incubation(people[i]);
 				if(but_check(people[i]))
@@ -583,7 +583,7 @@ static int simulation(int modifier[MODIFIER_SIZE][COORDS], int affichage,
 			count++;
 		}
 	if (affichage)
-		printWorld(worldSize, blocker, people);
+		print_world(worldSize, blocker, people);
 	return count;
 }
 

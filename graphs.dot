@@ -1,0 +1,56 @@
+digraph callgraph {
+
+"main" -> "median" [style=solid];
+"median" -> "sort" [style=solid];
+
+"main" -> "lecture_affichage" [style=solid];
+
+"main" -> "lecture_nbSim" [style=solid];
+"lecture_nbSim" -> "erreur_nbSim" [style=solid];
+subgraph simulation{
+	"main" -> "simulation" [minlen=3, style=solid];
+
+
+
+
+	"simulation" -> "but_check" [style=solid];
+	"simulation" -> "test_incubation" [style=solid];
+	subgraph reboucl{
+		"simulation" -> "blocage" [style=solid];
+		"blocage" -> "move_possible" [style=solid];
+		"move_possible" -> "rebouclement" [style=solid];
+
+		"simulation" -> "test_contamination" [style=solid];
+		"test_contamination" -> "rebouclement" [style=solid];
+
+		"simulation" -> "move" [style=solid];
+		"move" -> "rebouclement" [style=solid];
+	}
+
+
+	"simulation" -> "test_fin" [style=solid];
+	"simulation" -> "print_world" [style=solid];
+	"simulation" -> "move_find" [style=solid];
+	"simulation" -> "new_but" [style=solid];
+	
+}
+
+"main" -> "lecture_worldSize" [style=solid];
+"lecture_worldSize" -> "erreur_taille_monde" [style=solid];
+
+"main" -> "lecture_nbPers" [style=solid];
+"lecture_nbPers" -> "erreur_nbP" [style=solid];
+
+"main" -> "lecture_personnes" [style=solid];
+"lecture_personnes" -> "erreur_superposition" [style=solid];
+"lecture_personnes" -> "erreur_indice_ligne_colonne" [style=solid];
+
+
+
+
+
+
+
+
+
+}
