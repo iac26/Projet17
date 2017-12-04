@@ -393,7 +393,7 @@ static int lecture_personnes(int worldSize, int nbPers,
 }
 
 static int rebouclement(int worldSize, int pos){
-	return pos % worldSize;
+	return pos < 0 ? pos + worldSize : pos % worldSize;
 }
 
 static void print_world(int worldSize, int len, int people[len][NB_PARAM_PERS]) {
