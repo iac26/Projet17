@@ -17,18 +17,18 @@
 
 // *******************************************************************
 //			   Symboles définis avec la directive define
-#define NB_PARAM_PERS 5
-#define MIN_WORLD_SIZE 1
-#define MIN_NB_PERS 0
-#define MIN_NB_SIM 0
-#define COORDS 2
+#define NB_PARAM_PERS 		5
+#define MIN_WORLD_SIZE 		1
+#define MIN_NB_PERS			0
+#define MIN_NB_SIM 			0
+#define COORDS 				2
 #define NB_POSSIBLE_TARGETS 9
-#define NB_POSSIBLE_MOVES 8
-#define MAX_CYCLES 200
-#define MODIFIER_SIZE 9
-#define PREMIER_ELEMENT 1
-#define VRAI 1
-#define FAUX 0
+#define NB_POSSIBLE_MOVES 	8
+#define MAX_CYCLES 			200
+#define MODIFIER_SIZE 		9
+#define PREMIER_ELEMENT 	1
+#define VRAI 				1
+#define FAUX 				0
 
 
 //             Symboles définies avec l'instruction enum
@@ -393,11 +393,7 @@ static int lecture_personnes(int worldSize, int nbPers,
 }
 
 static int rebouclement(int worldSize, int pos){
-	if (pos >= worldSize)
-		pos -= worldSize;
-	if (pos < 0)
-		pos += worldSize;
-	return pos;
+	return pos % worldSize;
 }
 
 static void print_world(int worldSize, int len, int people[len][NB_PARAM_PERS]) {
