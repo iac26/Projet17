@@ -2,13 +2,14 @@
 \usepackage{geometry}      
 \usepackage[latin1]{inputenc}  
 \usepackage[T1]{fontenc}          		
-\geometry{a4paper, margin=2.5cm} 
+\geometry{a4paper, margin=2cm, tmargin=3cm, bmargin=1cm} 
 \usepackage{scrextend}  
 \usepackage{tikz}
 \usepackage{framed}
 \usepackage{graphicx}
 \usepackage{fancyhdr}
 \usepackage{amsmath}
+\usepackage{float}
 
 \newcommand\tab[1][1em]{\hspace*{#1}}
 
@@ -16,40 +17,56 @@
 \pagestyle{fancy}
 \rhead{Iacopo Sprenger 284074}
 \lhead{Programmation I}
+\fancyfoot{}
 \setlength{\headheight}{14pt}
 					
 \begin{document}
 \begin{center}
 \Large \textbf{Projet d'Automne: Me too ?}
 \end{center}
-L'évaluation des contextes est faite par trois boucles "for" les unes dans les autres. Tout à l'extérieur il y a la boucle du contexte, ensuite vient le taux de vaccination et finalement une boucle sur \textit{nbSim}, le nombre de simulations. A l'intérieur de ces boucles se trouve la fonction simulation. \textit{simulation} gère une simulation, c'est à dire, la mise à jour asynchrone jusqu'à ce que toutes les personnes non vaccinées soient contaminées. \\
 
-\begin{figure}[htb]
-\textbf{Pseudocode }
-\begin{framed} %pseudocode
+L'évaluation des contextes est faite par trois boucles "for" les unes dans les autres. Tout à l'extérieur il y a la boucle du contexte, ensuite vient le taux de vaccination et finalement une boucle sur \textit{nbSim}, le nombre de simulations. A l'intérieur de ces boucles se trouve la fonction simulation. La fonction simulation gère une simulation, c'est à dire, la mise à jour asynchrone jusqu'à ce que toutes les personnes non vaccinées soient contaminées. 
+%La mise-à-jour asynchrone est découpée en six fonction, elle commence par un test d'incubation suivi d'une fonction qui vérifie si le but est atteint. Ensuite vient le calcul du prochain mouvement, une verification de la possibilité de ce mouvement puis le déplacement de la personne et le test de contamination. Après la mise-à-jour se trouve également une fonction qui vérifie si les conditions d'arrêt sont atteintes. L'affichage de la grille se fait aussi par le biais d'une fonction. 
+\begin{figure}[H] %PSEUDOCODE
+\textbf{Pseudocode de l'évaluation des contextes }
+\begin{framed} 
 \vspace{4pt}
-1: \tab[0cm]\textit{simulations}[\textit{nbSim}]\\
+1: \tab[0cm]\textit{simulations}[\textit{nbSim}] (création du tableau des durées de contamination)\\
 2: \tab[0cm]\textbf{pour} \textit{contexte} \textbf{allant de} \textit{nbPers} \textbf{à} 1: \\
 3: \tab[1cm]\textbf{pour} \textit{vaccination} \textbf{allant de} 0 \textbf{à} \textit{contexte}-1 : \\
 4: \tab[2cm]\textbf{si} \textit{vaccination} est différent de 0 : \\
 5: \tab[3cm]\textit{people}[\textit{vaccination}][ETAT] $\leftarrow$ V \\
-6: \tab[3cm]\textbf{pour} \textit{sim} \textbf{allant de} 0 \textbf{à} \textit{nbSim} : \\
-7: \tab[4cm]\textit{simulations}[\textit{sim}] $\leftarrow$ \textbf{simulation}(contexte, vaccination, ...)\\
-8: \tab[3cm]\textit{mediane} $\leftarrow$ \textbf{mediane}(\textit{simulations})\\
-9: \tab[3cm]\textit{densité} $\leftarrow$ \textit{$contexte/world\_size^2$}\\
-10:\tab[3cm]\textit{taux\_vaccination} $\leftarrow$ \textit{$vaccination/contexte$}\\
-11:\tab[3cm]\textbf{afficher} \textit{densité \tab taux\_vaccination \tab mediane}\\
-12:\tab[3cm]\textbf{pour} \textit{i} \textbf{allant de} 0 \textbf{à} \textit{contexte} - 1 : \\
-13:\tab[4cm]\textit{people}[\textit{i}][ETAT] $\leftarrow$ N
+6: \tab[2cm]\textbf{pour} \textit{sim} \textbf{allant de} 0 \textbf{à} \textit{nbSim} : \\
+7: \tab[3cm]\textit{simulations}[\textit{sim}] $\leftarrow$ \textbf{simulation}(contexte, vaccination, ...)\\
+8: \tab[2cm]\textbf{pour} \textit{i} \textbf{allant de} 0 \textbf{à} \textit{contexte} - 1 : \\
+9: \tab[3cm]\textit{people}[\textit{i}][ETAT] $\leftarrow$ N\\
+10:\tab[2cm]\textit{mediane} $\leftarrow$ \textbf{mediane}(\textit{simulations})\\
+11:\tab[2cm]\textit{densité} $\leftarrow$ \textit{$contexte/world\_size^2$}\\
+12:\tab[2cm]\textit{taux\_vaccination} $\leftarrow$ \textit{$vaccination/contexte$}\\
+13:\tab[2cm]\textbf{afficher} \textit{densité \tab taux\_vaccination \tab mediane}
 \end{framed}
 \end{figure}
-\begin{figure}[htb]
-\textbf{Diagramme des fonctions \textit{Call Graph} }
+\begin{figure}[H] %CALLGRAPH
+\textbf{Diagramme des fonctions \textit{Call Graph}}
 \begin{framed}
-\includegraphics[scale=0.12]{graph.png}
+\includegraphics[scale=0.127]{graph.png}
 \end{framed}
 \end{figure}
-
+\begin{figure}[H] %ANALYSE
+\textbf{Résultat du test12}
+\begin{framed}
+\includegraphics[scale=0.14]{implot.png}
+\end{framed}
+\end{figure}
+Voici le graphe obtenu à partir du fichier test12.txt (nbSim = 1000) avec gnuplot, à gauche il n'y a que le taux de vaccination et la densité tandis que à droite il y a en plus la durée de contamination. \\
+Sur le graphe de droite on peut voir que la durée de contamination augmente dans deux cas, soit lorsque la population diminue, soit lorsque le taux de vaccination augmente. Moins il y a de personnes dans le monde, moins il y a de chances qu'elles se croisent et donc qu'elles se contaminent. Ceci explique la première cause de diminution du temps de contamination. 
+Lorsque le taux de vaccination augmente il faut que presque toutes les personnes soient vaccinées pour atteindre le pic de la durée de contamination totale. Puisque dans la réalité il est impensable de réduire la densité de population en supprimant des personnes, le seul moyen restant pour diminuer la vitesse de propagation d'une maladie est de vacciner le plus de personnes possible.
+sur le graphe de droite, lorsqu'il ne reste plus qu'une personne non vaccinée le temps de contamination chute. Ceci est inattendu et c'est probablement dû au fait que la deuxième personne de la liste (la seule non vaccinée dans ce cas) se trouve proche de la personne contaminée initialement. Ainsi le manque d'aléatoire dans le choix des personnes à vacciner produit cette "chute" redondante pour le fichier \textit{test12.txt}
+%COMPLEXITÉ 
+\\\\
+complexité de la fonction simulation. 
+la plus grande complexité est atteinte dans simulation lors de $test\_contamination$ et lors de $move\_possible$
+ordre de complexité de la fonction simulation. O($nbPers^2$) 
 \end{document} 
 
 
