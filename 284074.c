@@ -393,7 +393,11 @@ static int lecture_personnes(int worldSize, int nbPers,
 }
 
 static int rebouclement(int worldSize, int pos){
-	return pos < 0 ? pos + worldSize : pos % worldSize;
+	if (pos < 0)
+		pos += worldSize;
+	if (pos >= worldSize)
+		pos -= worldSize;
+	return pos;
 }
 
 static void print_world(int worldSize, int len, int people[len][NB_PARAM_PERS]) {
@@ -433,7 +437,7 @@ static void test_contamination(int modifier[MODIFIER_SIZE][COORDS],
 							   int people[len][NB_PARAM_PERS], int index){
 	int i = index;
 	for (int j = 0; j < len; j++) {
-		for (int k = PREMIER_ELEMENT; k < NB_POSSIBLE_MOVES; k++) {
+		for (int k = PREMIER_ELEMENT; k < MODIFIER_SIZE; k++) {
 			if ((rebouclement(worldSize, people[i][X] + modifier[k][X]) == 
 				 people[j][X]) &&
 				(rebouclement(worldSize, people[i][Y] + modifier[k][Y]) ==
@@ -471,10 +475,8 @@ static void new_but(int worldSize, int person[NB_PARAM_PERS]) {
 	int new_target[COORDS];
 	do {
 		new_target[X] = rand() % worldSize;
-	}while(new_target[X] == person[BUT_X]);
-	do {
 		new_target[Y] = rand() % worldSize;
-	}while(new_target[Y] == person[BUT_Y]);
+	}while((new_target[Y] == person[BUT_Y]) && (new_target[X] == person[BUT_X]));
 		person[BUT_X] = new_target[X];
 		person[BUT_Y] = new_target[Y];
 }
