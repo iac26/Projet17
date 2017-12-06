@@ -248,20 +248,20 @@ int main(void) {
 	if(!lecture_personnes(worldSize, nbPers, people))
 		return EXIT_FAILURE;
 	int simulations[nbSim];
-	for(int contexte = nbPers; contexte > 1; contexte--) {
-		for(int vaccin = 0; vaccin < contexte-1; vaccin++) {
-			if (vaccin != 0) {
-				people[vaccin][ETAT] = V;
+	for(int personnes = nbPers; personnes > 1; personnes--) {
+		for(int contexte = 0; contexte < personnes-1; contexte++) {
+			if (contexte != 0) {
+				people[contexte][ETAT] = V;
 			}
 			for(int sim = 0; sim < nbSim; sim++){
 				simulations[sim] = simulation(modifier, affichage,
-											  worldSize, nbPers, people, contexte);
+											  worldSize, nbPers, people, personnes);
 				if (verbose)
 					printf("# simulation finie!\n");
 			}
 			double valeur_mediane = median(nbSim, simulations);
-			double densite = (double)contexte/(worldSize*worldSize);
-			double taux_vaccination = (double)vaccin/(double)contexte;
+			double densite = (double)personnes/(worldSize*worldSize);
+			double taux_vaccination = (double)contexte/(double)personnes;
 			if (verbose)
 				printf("# toutes les simulations pour un contexte finies!\n");
 			printf("%-10g %-10g %-10g\n", densite, taux_vaccination, valeur_mediane);
@@ -269,7 +269,7 @@ int main(void) {
 		if (verbose)
 			printf("# touts les contextes pour une densité finies!\n");
 		printf("\n");
-		for(int i = PREMIER_ELEMENT; i < contexte-1; i++)
+		for(int i = PREMIER_ELEMENT; i < personnes-1; i++)
 			people[i][ETAT] = N;
 	}	
 	return EXIT_SUCCESS;
@@ -527,6 +527,7 @@ static void blocage(int next_move[COORDS], int modifier[MODIFIER_SIZE][COORDS],
 				m -= NB_POSSIBLE_MOVES;
 			if (mcount > NB_POSSIBLE_MOVES)
 				m = 0;
+				new_but(worldSize, people[i]);
 			mcount++;
 		}
 		next_move[X] = modifier[m][X];
