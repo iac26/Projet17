@@ -1,4 +1,4 @@
-\documentclass[11pt]{article}    	
+\documentclass[10pt]{article}    	
 \usepackage{geometry}      
 \usepackage[latin1]{inputenc}  
 \usepackage[T1]{fontenc}          		
@@ -10,8 +10,20 @@
 \usepackage{fancyhdr}
 \usepackage{amsmath}
 \usepackage{float}
+\usepackage{color}
+\setlength{\parindent}{0cm}
+
+\definecolor{mygreen}{RGB}{0, 140, 0}
+\definecolor{myblue}{RGB}{0, 0, 255}
+\definecolor{myred}{RGB}{255, 0, 0}
 
 \newcommand\tab[1][1em]{\hspace*{#1}}
+\newlength{\framedline}
+\setlength{\framedline}{\textwidth plus 18pt}
+\let\oldrule\rule
+\renewcommand{\rule}[2]{
+   \hspace*{-9pt}\oldrule{\framedline}{0.4pt}\newline
+}
 
 
 \pagestyle{fancy}
@@ -24,50 +36,59 @@
 \begin{center}
 \Large \textbf{Projet d'Automne: Me too ?}
 \end{center}
-
-L'évaluation des contextes est faite par trois boucles "for" les unes dans les autres. Tout à l'extérieur il y a la boucle du contexte, ensuite vient le taux de vaccination et finalement une boucle sur \textit{nbSim}, le nombre de simulations. A l'intérieur de ces boucles se trouve la fonction simulation. La fonction simulation gère une simulation, c'est à dire, la mise à jour asynchrone jusqu'à ce que toutes les personnes non vaccinées soient contaminées. 
-%La mise-à-jour asynchrone est découpée en six fonction, elle commence par un test d'incubation suivi d'une fonction qui vérifie si le but est atteint. Ensuite vient le calcul du prochain mouvement, une verification de la possibilité de ce mouvement puis le déplacement de la personne et le test de contamination. Après la mise-à-jour se trouve également une fonction qui vérifie si les conditions d'arrêt sont atteintes. L'affichage de la grille se fait aussi par le biais d'une fonction. 
 \begin{figure}[H] %PSEUDOCODE
 \textbf{Pseudocode de l'évaluation des contextes }
 \begin{framed} 
 \vspace{4pt}
+Entrée: \textit{nbSim}, \textit{nbPers}, \textit{worldSize} \textit{people} (tableau contenant la position et l'état des personnes)\\
+Sortie: affichage de la \textit{densité}, du \textit{taux\_vaccination} et de la \textit{mediane}\\
+\rule{} e
 1: \tab[0cm]\textit{simulations}[\textit{nbSim}] (création du tableau des durées de contamination)\\
-2: \tab[0cm]\textbf{pour} \textit{contexte} \textbf{allant de} \textit{nbPers} \textbf{à} 1: \\
-3: \tab[1cm]\textbf{pour} \textit{vaccination} \textbf{allant de} 0 \textbf{à} \textit{contexte}-1 : \\
+2: \tab[0cm]\textbf{pour} \textit{personnes} \textbf{allant de} \textit{nbPers} \textbf{à} 1: \\
+3: \tab[1cm]\textbf{pour} \textit{vaccination} \textbf{allant de} 0 \textbf{à} \textit{personnes}-1 : \\
 4: \tab[2cm]\textbf{si} \textit{vaccination} est différent de 0 : \\
 5: \tab[3cm]\textit{people}[\textit{vaccination}][ETAT] $\leftarrow$ V \\
 6: \tab[2cm]\textbf{pour} \textit{sim} \textbf{allant de} 0 \textbf{à} \textit{nbSim} : \\
-7: \tab[3cm]\textit{simulations}[\textit{sim}] $\leftarrow$ \textbf{simulation}(contexte, vaccination, ...)\\
-8: \tab[2cm]\textbf{pour} \textit{i} \textbf{allant de} 0 \textbf{à} \textit{contexte} - 1 : \\
+7: \tab[3cm]\textit{simulations}[\textit{sim}] $\leftarrow$ \textbf{simulation}\\
+8: \tab[2cm]\textbf{pour} \textit{i} \textbf{allant de} 0 \textbf{à} \textit{personnes} - 1 : \\
 9: \tab[3cm]\textit{people}[\textit{i}][ETAT] $\leftarrow$ N\\
 10:\tab[2cm]\textit{mediane} $\leftarrow$ \textbf{mediane}(\textit{simulations})\\
-11:\tab[2cm]\textit{densité} $\leftarrow$ \textit{$contexte/world\_size^2$}\\
-12:\tab[2cm]\textit{taux\_vaccination} $\leftarrow$ \textit{$vaccination/contexte$}\\
+11:\tab[2cm]\textit{densité} $\leftarrow$ \textit{$personnes/world\_size^2$}\\
+12:\tab[2cm]\textit{taux\_vaccination} $\leftarrow$ \textit{$vaccination/personnes$}\\
 13:\tab[2cm]\textbf{afficher} \textit{densité \tab taux\_vaccination \tab mediane}
 \end{framed}
 \end{figure}
-\begin{figure}[H] %CALLGRAPH
-\textbf{Diagramme des fonctions \textit{Call Graph}}
-\begin{framed}
-\includegraphics[scale=0.127]{graph.png}
-\end{framed}
-\end{figure}
+L'évaluation des contextes se fait par trois boucles "for" imbriquées les unes dans les autres. Les boucles font varier ces paramètres : \textit{vaccination} désigne l'indice de la personne à vacciner avant le début des simulations, \textit{personnes} est passé en argument à \textbf{simulation} c'est l'indice de la première personne qui ne sera pas prise en compte dans la simulation et \textit{sim} est l'indice de la simulation actuelle.
+ La fonction \textbf{simulation} est elle-même découpée en fonctions plus petites: \textbf{but\_check}, \textbf{new\_but}, \textbf{blocage}, \textbf{move\_find} et \textbf{move} s'occupent des déplacements et \textbf{test\_incubation} ainsi que \textbf{test\_contamination} s'occupent de la partie contamination. \\\\
+La complexité de l'évaluation des contextes en fonction de \textit{nbPers} est:
+\begin{center} \textbf{O($nbPers^2$)} \end{center}
+car il y a deux boucles l'une dans l'autre qui s'éxécutent \textit{nbPers} fois. La complexité du programme entier est: 
+\begin{center} \textbf{O($nbPers^4$)} \end{center}
+car à l'intérieur des boucles de l'évaluation des contextes, dans la fonction \textbf{simulation}, il y a encore la boucle de la mise à jour asynchrone qui itère sur \textit{nbPers}, à l'intérieur de laquelle se trouve la boucle de \textbf{move\_possible} et la boucles de \textbf{test\_contamination} qui itèrent sur \textit{nbPers}. Puisque ces boucles sont en parallèle on ne les compte qu'une fois ce qui donne un total de quatre boucles "for" sur \textit{nbPers} les unes dans les autres.
 \begin{figure}[H] %ANALYSE
 \textbf{Résultat du test12}
 \begin{framed}
+\begin{center}
 \includegraphics[scale=0.14]{implot.png}
+\end{center}
 \end{framed}
 \end{figure}
-Voici le graphe obtenu à partir du fichier test12.txt (nbSim = 1000) avec gnuplot, à gauche il n'y a que le taux de vaccination et la densité tandis que à droite il y a en plus la durée de contamination. \\
-Sur le graphe de droite on peut voir que la durée de contamination augmente dans deux cas, soit lorsque la population diminue, soit lorsque le taux de vaccination augmente. Moins il y a de personnes dans le monde, moins il y a de chances qu'elles se croisent et donc qu'elles se contaminent. Ceci explique la première cause de diminution du temps de contamination. 
-Lorsque le taux de vaccination augmente il faut que presque toutes les personnes soient vaccinées pour atteindre le pic de la durée de contamination totale. Puisque dans la réalité il est impensable de réduire la densité de population en supprimant des personnes, le seul moyen restant pour diminuer la vitesse de propagation d'une maladie est de vacciner le plus de personnes possible.
-sur le graphe de droite, lorsqu'il ne reste plus qu'une personne non vaccinée le temps de contamination chute. Ceci est inattendu et c'est probablement dû au fait que la deuxième personne de la liste (la seule non vaccinée dans ce cas) se trouve proche de la personne contaminée initialement. Ainsi le manque d'aléatoire dans le choix des personnes à vacciner produit cette "chute" redondante pour le fichier \textit{test12.txt}
-%COMPLEXITÉ 
-\\\\
-complexité de la fonction simulation. 
-la plus grande complexité est atteinte dans simulation lors de $test\_contamination$ et lors de $move\_possible$
-ordre de complexité de la fonction simulation. O($nbPers^2$) 
-\end{document} 
+Ce graphe est obtenu à partir du fichier \textit{test12.txt}  (nbSim = 1000 pour un graphe plus lisse), le graphe montre la durée de contamination totale en fonction de la densité et du taux de vaccination. Sur le graphe on peut voir que la durée de contamination totale augmente lorsque la densité diminue et lorsque le taux de vaccination augmente. Quand la densité diminue le temps de contamination diminue car dans un monde moins dense les personnes ont moins de chances de se croiser et donc la probabilité qu'une personne contamine une autre est plus faible. Lorsque le taux de vaccination augmente le temps de contamination diminue également car les personnes contaminées ont moins de chances de croiser une personne susceptible d'être contaminée, il y a donc également une probabilité de contamination plus faible.\\\\
+Dans la réalité il serait impensable de réduire la densité de population en supprimant des personnes, c'est donc la méthode de la vaccination qui est utilisée pour empêcher une maladie de se répandre. De plus on peut voir sur le graphe que l'augmentation du temps de contamination en fonction du taux de vaccination n'est pas linéaire, c'est que lorsque presque toutes les personnes sont vaccinées que le graphe grimpe beaucoup. Cela montre l'importance de vacciner le plus de personnes possible afin d'entraver au maximum la propagation des maladies.\\\\
+Sur le graphe, lorsque le taux de vaccination est maximal, le temps de contamination total diminue. Cela semble incohérent à première vue mais en analysant la situation on voit que dans la situation ou une seule personne est non-vaccinée la condition de contamination totale est juste de contaminer cette personne. Pour terminer la simulation il suffit que la personne non-vaccinée croise la personne contaminée.
+La chute sur le graphe ne signifie donc pas que la "maladie" se propage plus vite mais que dans cette situation particulière les conditions de fin sont plus facilement atteignables. 
+\\
+\begin{figure}[H] %CALLGRAPH
+\textbf{Graphe des appels de fonctions}
+\begin{framed}
+\begin{center}
+\includegraphics[scale=0.13]{graph.png}
+\end{center}
+\end{framed}
+\end{figure}
+Voici le graphe des appels de fonctions, en \color{myblue} bleu \color{black} les fonctions appartenant a la simulation, en \color{myred} rouge \color{black} les fonctions d'erreur et en \color{mygreen} vert \color{black} les fonction de lecture des données de l'utilisateur. 
+
+\end{document}
 
 
 

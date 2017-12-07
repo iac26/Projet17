@@ -5,16 +5,22 @@ node [shape=box, style=rounded];
 graph [ dpi = 300 ];
 "main" -> "median" [style=solid];
 "median" -> "sort" [style=solid];
-
+{
+	node [color=forestgreen]
 "main" -> "lecture_affichage" [style=solid];
 
 "main" -> "lecture_nbSim" [style=solid];
-"lecture_nbSim" -> "erreur_nbSim" [style=solid];
+}
 {
-	"main" -> "simulation" [minlen=3, style=solid];
-	"simulation" -> "but_check" [style=solid];
-	"simulation" -> "test_incubation" [style=solid];
+	node [color=red]
+"lecture_nbSim" -> "erreur_nbSim" [style=solid];
+}
+	
 	{
+		node [color=blue]
+		"main" -> "simulation" [minlen=3, style=solid];
+		"simulation" -> "but_check" [style=solid];
+		"simulation" -> "test_incubation" [style=solid];
 		"simulation" -> "blocage" [style=solid];
 		"blocage" -> "move_possible" [style=solid];
 		"move_possible" -> "rebouclement" [style=solid];
@@ -22,20 +28,26 @@ graph [ dpi = 300 ];
 		"test_contamination" -> "rebouclement" [style=solid];
 		"simulation" -> "move" [style=solid];
 		"move" -> "rebouclement" [style=solid];
+		"simulation" -> "test_fin" [style=solid];
+		"simulation" -> "print_world" [style=solid];
+		"simulation" -> "move_find" [style=solid];
+		"simulation" -> "new_but" [style=solid];
+		"blocage" -> "new_but" [style=solid];
 	}
-	"simulation" -> "test_fin" [style=solid];
-	"simulation" -> "print_world" [style=solid];
-	"simulation" -> "move_find" [style=solid];
-	"simulation" -> "new_but" [style=solid];
-}
+
+{
+	node [color=forestgreen]
 
 "main" -> "lecture_worldSize" [style=solid];
-"lecture_worldSize" -> "erreur_taille_monde" [style=solid];
-
 "main" -> "lecture_nbPers" [style=solid];
-"lecture_nbPers" -> "erreur_nbP" [style=solid];
-
 "main" -> "lecture_personnes" [style=solid];
+}
+{
+	node [color=red]
+"lecture_worldSize" -> "erreur_taille_monde" [style=solid];
+"lecture_nbPers" -> "erreur_nbP" [style=solid];
 "lecture_personnes" -> "erreur_superposition" [style=solid];
 "lecture_personnes" -> "erreur_indice_ligne_colonne" [style=solid, minlen=2];
+}
+
 }
