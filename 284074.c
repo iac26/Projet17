@@ -1,7 +1,7 @@
 /**
  * \file		284074.c
- * \version		1.6
- * \date		2017-12-01
+ * \version		1.8
+ * \date		2017-12-07
  * \author		Iacopo Sprenger (284074)
  * \brief		Programme pour le projet du cours CS-111(c)
  *              
